@@ -1,0 +1,5 @@
+mod_wsgi
+Flask
+kubernetes>=3.0.0,<4.0.0
+openshift
+bitmath

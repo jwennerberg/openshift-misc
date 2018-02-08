@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>SEBShift Inventory - Pod Resources</title>
+    <style>
+      body {color:#369;font-family: Arial,Helvetica,sans-serif;font-size: 10pt;}
+      table {border-collapse: collapse;}
+      table, th, td {border: 1px solid #369;text-align: left;padding: 5px;}
+      .footer {font-weight: bold;}
+    </style>
+  </head>
+  <body>
+    <table>
+      <tr>
+        <th>Namespace</th>
+        <th>Pod</th>
+        <th>Container</th>
+        <th>CPU Requests</th>
+        <th>CPU Limits</th>
+        <th>Memory Requests</th>
+        <th>Memory Limits</th>
+      </tr>
+    {% for p in podlist %}
+      <tr>
+        <td>{{ p.namespace }}</td>
+        <td>{{ p.pod }}</td>
+        <td>{{ p.container }}</td>
+        <td>{% if p.cpu_requests %}{{ p.cpu_requests }}m{% endif %}</td>
+        <td>{% if p.cpu_limits %}{{ p.cpu_limits }}m{% endif %}</td>
+        <td>{% if p.mem_requests %}{{ p.mem_requests }}{% endif %}</td>
+        <td>{% if p.mem_limits %}{{ p.mem_limits }}{% endif %}</td>
+      </tr>
+    {% endfor %}
+      <tr class='footer'>
+        <td colspan=3>Summary</td>
+        <td>{{ total.cpu_requests }}m</td>
+        <td>{{ total.cpu_limits }}m</td>
+        <td>{{ total.mem_requests }} MiB</td>
+        <td>{{ total.mem_limits }} MiB</td>
+      </tr>
+    </table>
+  </body>
+</html>

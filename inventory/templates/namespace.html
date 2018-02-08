@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>SEBShift Inventory - Namespaces</title>
+    <style>
+      body {color:#369;font-family: Arial,Helvetica,sans-serif;font-size: 10pt;}
+      table {border-collapse: collapse;}
+      table, th, td {border: 1px solid #369;text-align: left;padding: 5px;}
+      .footer {font-weight: bold;}
+    </style>
+  </head>
+  <body>
+    <table>
+      <tr>
+        <th>Namespace</th>
+        <th>Application-id</th>
+        <th>Router</th>
+        <th>Quota - CPU</th>
+        <th>Quota - Memory</th>
+      </tr>
+    {% for i in nslist%}
+      <tr>
+        <td><a href="/namespace/{{ i.namespace }}/podresources">{{ i.namespace }}</a></td>
+        <td>{% if i.appid %}{{ i.appid }}{% endif %}</td>
+        <td>{% if i.router %}{{ i.router }}{% endif %}</td>
+        <td>{% if i.quota_cpu %}{{ i.quota_cpu }} cores{% endif %}</td>
+        <td>{% if i.quota_memory %}{{ i.quota_memory }}{% endif %}</td>
+      </tr>
+    {% endfor %}
+      <tr class='footer'>
+        <td colspan=3>Summary</td>
+        <td>{{ total_cpu }} cores</td>
+        <td>{{ total_mem }} GiB</td>
+      </tr>
+    </table>
+  </body>
+</html>

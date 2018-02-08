@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>SEBShift Inventory - Quota</title>
+    <style>
+      body {color:#369;font-family: Arial,Helvetica,sans-serif;font-size: 10pt;}
+      table {border-collapse: collapse;}
+      table, th, td {border: 1px solid #369;text-align: left;padding: 5px;}
+    </style>
+  </head>
+  <body>
+    <table>
+      <tr>
+        <th>Namespace</th>
+        <th>CPU</th>
+        <th>Memory</th>
+        <th>Application-id</th>
+      </tr>
+    {% for i in quotalist %}
+      <tr>
+        <td>{{ i.namespace }}</td>
+        <td>{{ i.cpu }} cores</td>
+        <td>{{ i.memory }}</td>
+        <td>{{ i.appid }}</td>
+      </tr>
+    {% endfor %}
+    </table>
+  </body>
+</html>

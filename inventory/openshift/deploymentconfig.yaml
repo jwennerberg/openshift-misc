@@ -1,0 +1,66 @@
+apiVersion: v1
+kind: DeploymentConfig
+metadata:
+  creationTimestamp: null
+  labels:
+    app: inventory
+  name: inventory
+spec:
+  replicas: 1
+  selector:
+    deploymentconfig: inventory
+  strategy:
+    activeDeadlineSeconds: 21600
+    resources: {}
+    type: Rolling
+  template:
+    metadata:
+      labels:
+        app: inventory
+        deploymentconfig: inventory
+    spec:
+      containers:
+      - name: inventory
+        image: ' '
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        resources: {}
+      - name: oauth-proxy
+        image: openshift3/oauth-proxy:latest
+        imagePullPolicy: IfNotPresent
+        args:
+        - --https-address=:8443
+        - --provider=openshift
+        - --openshift-service-account=inventory
+        - --upstream=http://localhost:8080
+        - --tls-cert=/etc/tls/private/tls.crt
+        - --tls-key=/etc/tls/private/tls.key
+        - --cookie-secret=SECRET
+        - --openshift-sar={"verb":"get","resource":"resourcequota"}
+        ports:
+        - containerPort: 8443
+          name: public
+          protocol: TCP
+        resources: {}
+        volumeMounts:
+        - mountPath: /etc/tls/private
+          name: inventory-tls
+      serviceAccount: inventory
+      serviceAccountName: inventory
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: inventory-tls
+        secret:
+          secretName: inventory-tls
+  triggers:
+  - imageChangeParams:
+      automatic: true
+      containerNames:
+      - inventory
+      from:
+        kind: ImageStreamTag
+        name: inventory:latest
+    type: ImageChange
+  - type: ConfigChange
